@@ -1,0 +1,32 @@
+
+// Build.gradle generated for instrumentation module apache-jackrabbit-commons
+
+apply plugin: 'java'
+
+dependencies {
+   implementation 'org.apache.jackrabbit:jackrabbit-jcr-commons:2.20.12'
+   implementation 'javax.jcr:jcr:1.0'
+
+   // New Relic Java Agent dependencies
+   implementation 'com.newrelic.agent.java:newrelic-agent:6.4.0'
+   implementation 'com.newrelic.agent.java:newrelic-api:6.4.0'
+   implementation fileTree(include: ['*.jar'], dir: '../libs')
+   implementation fileTree(include: ['*.jar'], dir: '../test-lib')
+}
+
+jar {
+  manifest {
+    attributes 'Implementation-Title': 'com.newrelic.instrumentation.labs.apache-jackrabbit-commons'
+    attributes 'Implementation-Vendor': 'New Relic Labs'
+    attributes 'Implementation-Vendor-Id': 'com.newrelic.labs'
+    attributes 'Implementation-Version': 1.0
+  }
+}
+
+verifyInstrumentation {
+ passes("org.apache.jackrabbit:jackrabbit-jcr-commons:[2.20.12,)") 
+ {
+        compile 'javax.jcr:jcr:1.0'
+
+ }
+}
