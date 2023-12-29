@@ -9,7 +9,7 @@ import com.newrelic.api.agent.weaver.NewField;
 import com.newrelic.api.agent.weaver.Weave;
 import com.newrelic.api.agent.weaver.Weaver;
 
-@Weave(originalName = "org.apache.jackrabbit.core.data.AsyncTouchCallback", type = MatchType.Interface)
+@Weave(type = MatchType.Interface)
 public abstract class AsyncTouchCallback {
 
 	@NewField
