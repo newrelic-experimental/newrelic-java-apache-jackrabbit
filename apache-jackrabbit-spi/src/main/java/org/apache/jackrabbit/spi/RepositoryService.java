@@ -4,20 +4,8 @@ package org.apache.jackrabbit.spi;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.ItemExistsException;
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.NoSuchWorkspaceException;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
-import javax.jcr.UnsupportedRepositoryOperationException;
-import javax.jcr.ValueFormatException;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
-import javax.jcr.version.VersionException;
 
 import com.newrelic.api.agent.NewRelic;
 import com.newrelic.api.agent.Trace;
@@ -28,8 +16,8 @@ import com.newrelic.instrumentation.labs.jackrabbit.spi.Util;
 
 
 
-@Weave(originalName = "org.apache.jackrabbit.spi.RepositoryService", type = MatchType.Interface)
-abstract public class RepositoryService_instrumentation {
+@Weave(type = MatchType.Interface)
+abstract public class RepositoryService {
 
 
 	@Trace(dispatcher = true)
@@ -52,16 +40,23 @@ abstract public class RepositoryService_instrumentation {
 
 		}
 		catch (Exception e) {
-			handleException("error evaluating dispose", e);
+			Util.handleException(getClass().getSimpleName(),"error evaluating dispose", e);
 
 		}
-		Weaver.callOriginal();
+		try {
+			Weaver.callOriginal();
+		} catch (Exception e) {
+			if(RepositoryException.class.isInstance(e)) {
+				NewRelic.noticeError(e);
+				throw (RepositoryException)e;
+			}
+
+		}
 	}
 
 
 	@Trace(dispatcher = true)
-	public void submit(Batch batch) throws PathNotFoundException, ItemNotFoundException, NoSuchNodeTypeException, ValueFormatException, VersionException, LockException, ConstraintViolationException, AccessDeniedException, UnsupportedRepositoryOperationException, RepositoryException {
-
+	public void submit(Batch batch) {
 		Map<String, Object> attrs = new HashMap<>();
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "RepositoryService", getClass().getSimpleName(), "submit"});
@@ -79,7 +74,7 @@ abstract public class RepositoryService_instrumentation {
 
 		}
 		catch (Exception e) {
-			handleException("error evaluating submit", e);
+			Util.handleException(getClass().getSimpleName(),"error evaluating submit", e);
 
 		}
 		Weaver.callOriginal();
@@ -87,7 +82,7 @@ abstract public class RepositoryService_instrumentation {
 
 
 	@Trace(dispatcher = true)
-	public void move(SessionInfo sessionInfo, NodeId srcNodeId, NodeId destParentNodeId, Name destName) throws ItemExistsException, PathNotFoundException, VersionException, ConstraintViolationException, LockException, AccessDeniedException, UnsupportedRepositoryOperationException, RepositoryException{
+	public void move(SessionInfo sessionInfo, NodeId srcNodeId, NodeId destParentNodeId, Name destName) {
 
 		Map<String, Object> attrs = new HashMap<>();
 
@@ -120,15 +115,14 @@ abstract public class RepositoryService_instrumentation {
 
 		}
 		catch (Exception e) {
-			handleException("error evaluating move", e);
+			Util.handleException(getClass().getSimpleName(),"error evaluating move", e);
 
 		}
 		Weaver.callOriginal();
 	}
 
 	@Trace(dispatcher = true)
-	public void copy(SessionInfo sessionInfo, String srcWorkspaceName, NodeId srcNodeId, NodeId destParentNodeId, Name destName) throws NoSuchWorkspaceException, ConstraintViolationException, VersionException, AccessDeniedException, PathNotFoundException, ItemExistsException, LockException, UnsupportedRepositoryOperationException, RepositoryException
-	{
+	public void copy(SessionInfo sessionInfo, String srcWorkspaceName, NodeId srcNodeId, NodeId destParentNodeId, Name destName) {
 
 		Map<String, Object> attrs = new HashMap<>();
 
@@ -161,17 +155,11 @@ abstract public class RepositoryService_instrumentation {
 
 		}
 		catch (Exception e) {
-			handleException("error evaluating copy", e);
+			Util.handleException(getClass().getSimpleName(),"error evaluating copy", e);
 
 		}
 		Weaver.callOriginal();
 	}
 
 
-
-
-	private void handleException(String message, Throwable e) {
-		NewRelic.getAgent().getLogger().log(Level.INFO, "Custom SearchResource Instrumentation - " + message);
-		NewRelic.getAgent().getLogger().log(Level.FINER, "Custom SearchResource Instrumentation - " + message + ": " + e.getMessage());
-	}
 }

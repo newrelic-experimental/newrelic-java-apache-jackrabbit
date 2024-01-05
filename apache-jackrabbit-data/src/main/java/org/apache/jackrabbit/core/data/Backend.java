@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 
 import com.newrelic.api.agent.DatastoreParameters;
 import com.newrelic.api.agent.NewRelic;
@@ -22,8 +21,19 @@ public abstract class Backend {
 	public Set<DataIdentifier> deleteAllOlderThan(long timestamp)
 			throws DataStoreException{
 
+		Set<DataIdentifier> result = null;
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "Backend", getClass().getSimpleName(), "deleteAllOlderThan"});
-		return Weaver.callOriginal();
+
+		try {
+			result= Weaver.callOriginal();
+		} catch (Exception e) {
+			if(DataStoreException.class.isInstance(e)) {
+				NewRelic.noticeError(e);
+				throw (DataStoreException)e;
+			}
+
+		}
+		return result;
 	}
 
 
@@ -31,14 +41,32 @@ public abstract class Backend {
 	public void deleteRecord(DataIdentifier identifier) throws DataStoreException{
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "Backend", getClass().getSimpleName(), "deleteRecord"});
-		Weaver.callOriginal();
+		try {
+			Weaver.callOriginal();
+		} catch (Exception e) {
+			if(DataStoreException.class.isInstance(e)) {
+				NewRelic.noticeError(e);
+				throw (DataStoreException)e;
+			}
+
+		}
 	}
 
 	@Trace(dispatcher = true)
 	public InputStream read(DataIdentifier identifier) throws DataStoreException{
 
+		InputStream result = null;
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "Backend", getClass().getSimpleName(), "read"});
-		return Weaver.callOriginal();
+		try {
+			result= Weaver.callOriginal();
+		} catch (Exception e) {
+			if(DataStoreException.class.isInstance(e)) {
+				NewRelic.noticeError(e);
+				throw (DataStoreException)e;
+			}
+
+		}
+		return result;
 	}
 
 	@Trace(dispatcher = true)
@@ -57,10 +85,18 @@ public abstract class Backend {
 			}
 		}
 		catch (Exception e) {
-			handleException("error evaluating write", e);
+			Util.handleException(getClass().getSimpleName(),"error evaluating write", e);
 
 		}
-		Weaver.callOriginal();
+		try {
+			Weaver.callOriginal();
+		} catch (Exception e) {
+			if(DataStoreException.class.isInstance(e)) {
+				NewRelic.noticeError(e);
+				throw (DataStoreException)e;
+			}
+
+		}
 	}
 
 	@Trace(dispatcher = true)
@@ -68,13 +104,17 @@ public abstract class Backend {
 			throws DataStoreException{
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "touch", getClass().getSimpleName(), "deleteRecord"});
-		Weaver.callOriginal();
+		try {
+			Weaver.callOriginal();
+		} catch (Exception e) {
+			if(DataStoreException.class.isInstance(e)) {
+				NewRelic.noticeError(e);
+				throw (DataStoreException)e;
+			}
+
+		}
 	}
 
-	private void handleException(String message, Throwable e) {
-		NewRelic.getAgent().getLogger().log(Level.INFO, "Custom Backend Instrumentation - " + message);
-		NewRelic.getAgent().getLogger().log(Level.FINER, "Custom Backend Instrumentation - " + message + ": " + e.getMessage());
-	}
 
 	// Async Methods with no @Trace
 	public void touchAsync( DataIdentifier identifier, long minModifiedDate,

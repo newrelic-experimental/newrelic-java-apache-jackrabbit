@@ -5,7 +5,6 @@ package org.apache.jackrabbit.webdav.server;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 
@@ -23,8 +22,8 @@ import com.newrelic.instrumentation.labs.jackrabbit.webdav.Util;
 
 
 
-@Weave(originalName = "org.apache.jackrabbit.webdav.server.AbstractWebdavServlet", type = MatchType.BaseClass)
-abstract public class AbstractWebdavServlet_instrumentation {
+@Weave(type = MatchType.BaseClass)
+abstract public class AbstractWebdavServlet {
 
 
 	@Trace(dispatcher = true)
@@ -33,6 +32,7 @@ abstract public class AbstractWebdavServlet_instrumentation {
 					throws ServletException, IOException, DavException  {
 
 		Map<String, Object> attrs = new HashMap<>();
+		boolean result = false;
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "AbstractWebdavServlet", getClass().getSimpleName(), "execute"});
 
@@ -58,16 +58,27 @@ abstract public class AbstractWebdavServlet_instrumentation {
 
 		}
 		catch (Exception e) {
-			handleException("error evaluating execute", e);
+			Util.handleException(getClass().getSimpleName(),"error evaluating execute", e);
 
 		}
-		return Weaver.callOriginal();
+		try {
+			result = Weaver.callOriginal();
+		} catch (Exception e) {
+			if(ServletException.class.isInstance(e)) {
+				NewRelic.noticeError(e);
+				throw (ServletException)e;
+			}
+			else if(IOException.class.isInstance(e)) {
+				NewRelic.noticeError(e);
+				throw (IOException)e;
+			}
+			else if(DavException.class.isInstance(e)) {
+				NewRelic.noticeError(e);
+				throw (DavException)e;
+			}
+		}
+		return result;
 	}
 
 
-
-	private void handleException(String message, Throwable e) {
-		NewRelic.getAgent().getLogger().log(Level.INFO, "Custom AbstractWebdavServlet Instrumentation - " + message);
-		NewRelic.getAgent().getLogger().log(Level.FINER, "Custom AbstractWebdavServlet Instrumentation - " + message + ": " + e.getMessage());
-	}
 }

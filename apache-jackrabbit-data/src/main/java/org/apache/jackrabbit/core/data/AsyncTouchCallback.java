@@ -74,7 +74,7 @@ public abstract class AsyncTouchCallback {
 
 		if(segment != null) {
 			if(params != null) {
-				segment.reportAsExternal(params);
+				segment.reportAsExternal(params); // Need to send Abort
 			}
 			segment.end();
 			segment = null;
