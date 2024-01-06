@@ -5,14 +5,7 @@
 
 ### Bug Fixes
 - Code cleanup and optimization
-- Code cleanup and optimization
-- Code cleanup and optimization
-- Code cleanup exceptions
 
-## Version: [v1.0.0](https://github.com/newrelic-experimental/newrelic-java-apache-jackrabbit/releases/tag/v1.0.0) | Created: 2023-12-29
-### Features
-- First draft for Jackrabbit Instrumentation
-- First draft for Jackrabbit Instrumentation Updated Synch functions
 
 ## Installation
 
