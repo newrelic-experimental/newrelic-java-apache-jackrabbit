@@ -27,22 +27,15 @@ abstract public class RepositoryService {
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "RepositoryService", getClass().getSimpleName(), "dispose"});
 
-		try {
 
-
-			if (sessionInfo != null ) {
-				Util.recordValue(attrs, "sessionInfo.workspace", sessionInfo.getWorkspaceName());
-			}
-
-			if ( attrs != null ) {
-				NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
-			}
-
+		if (sessionInfo != null ) {
+			Util.recordValue(attrs, "sessionInfo.workspace", sessionInfo.getWorkspaceName());
 		}
-		catch (Exception e) {
-			Util.handleException(getClass().getSimpleName(),"error evaluating dispose", e);
 
+		if ( attrs != null ) {
+			NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
 		}
+
 		try {
 			Weaver.callOriginal();
 		} catch (Exception e) {
@@ -61,22 +54,15 @@ abstract public class RepositoryService {
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "RepositoryService", getClass().getSimpleName(), "submit"});
 
-		try {
 
-
-			if (batch != null ) {
-				Util.recordValue(attrs, "batch.name", batch.toString());
-			}
-
-			if ( attrs != null ) {
-				NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
-			}
-
+		if (batch != null ) {
+			Util.recordValue(attrs, "batch.name", batch.toString());
 		}
-		catch (Exception e) {
-			Util.handleException(getClass().getSimpleName(),"error evaluating submit", e);
 
+		if ( attrs != null ) {
+			NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
 		}
+
 		Weaver.callOriginal();
 	}
 
@@ -88,36 +74,29 @@ abstract public class RepositoryService {
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "RepositoryService", getClass().getSimpleName(), "move"});
 
-		try {
 
-
-			if (sessionInfo != null ) {
-				Util.recordValue(attrs, "sessionInfo.workspace", sessionInfo.getWorkspaceName());
-			}
-
-			if (srcNodeId != null ) {
-				Util.recordValue(attrs, "node.path", srcNodeId.getPath());
-			}
-
-			if (destParentNodeId != null ) {
-				Util.recordValue(attrs, "parentnode.path", destParentNodeId.getPath());
-			}
-
-			if (destName != null ) {
-				Util.recordValue(attrs, "destination.name", destName);
-			}
-
-
-
-			if ( attrs != null ) {
-				NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
-			}
-
+		if (sessionInfo != null ) {
+			Util.recordValue(attrs, "sessionInfo.workspace", sessionInfo.getWorkspaceName());
 		}
-		catch (Exception e) {
-			Util.handleException(getClass().getSimpleName(),"error evaluating move", e);
 
+		if (srcNodeId != null ) {
+			Util.recordValue(attrs, "node.path", srcNodeId.getPath());
 		}
+
+		if (destParentNodeId != null ) {
+			Util.recordValue(attrs, "parentnode.path", destParentNodeId.getPath());
+		}
+
+		if (destName != null ) {
+			Util.recordValue(attrs, "destination.name", destName);
+		}
+
+
+
+		if ( attrs != null ) {
+			NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
+		}
+
 		Weaver.callOriginal();
 	}
 
@@ -128,36 +107,29 @@ abstract public class RepositoryService {
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "RepositoryService", getClass().getSimpleName(), "copy"});
 
-		try {
 
-
-			if (sessionInfo != null ) {
-				Util.recordValue(attrs, "sessionInfo.workspace", sessionInfo.getWorkspaceName());
-			}
-
-			if (srcNodeId != null ) {
-				Util.recordValue(attrs, "node.path", srcNodeId.getPath());
-			}
-
-			if (destParentNodeId != null ) {
-				Util.recordValue(attrs, "parentnode.path", destParentNodeId.getPath());
-			}
-
-			if (destName != null ) {
-				Util.recordValue(attrs, "destination.name", destName);
-			}
-
-
-
-			if ( attrs != null ) {
-				NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
-			}
-
+		if (sessionInfo != null ) {
+			Util.recordValue(attrs, "sessionInfo.workspace", sessionInfo.getWorkspaceName());
 		}
-		catch (Exception e) {
-			Util.handleException(getClass().getSimpleName(),"error evaluating copy", e);
 
+		if (srcNodeId != null ) {
+			Util.recordValue(attrs, "node.path", srcNodeId.getPath());
 		}
+
+		if (destParentNodeId != null ) {
+			Util.recordValue(attrs, "parentnode.path", destParentNodeId.getPath());
+		}
+
+		if (destName != null ) {
+			Util.recordValue(attrs, "destination.name", destName);
+		}
+
+
+
+		if ( attrs != null ) {
+			NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
+		}
+
 		Weaver.callOriginal();
 	}
 

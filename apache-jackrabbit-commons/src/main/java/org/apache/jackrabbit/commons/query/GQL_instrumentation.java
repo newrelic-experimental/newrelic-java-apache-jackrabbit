@@ -25,79 +25,63 @@ abstract public class GQL_instrumentation {
 
 
 	@Trace(dispatcher = true)
-	 public static RowIterator execute(String statement,
-             Session session,
-             String commonPathPrefix,
-             Filter filter)  {
+	public static RowIterator execute(String statement,
+			Session session,
+			String commonPathPrefix,
+			Filter filter)  {
 
 		Map<String, Object> attrs = new HashMap<>();
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "GQL", "execute"});
 
-		try {
 
-
-
-			if (statement != null && !statement.isEmpty()) {
-				Util.recordValue(attrs, "statement.value", statement);
-
-			}
-			if (filter != null ) {
-				Util.recordValue(attrs, "filter.value", filter);
-
-			}
-
-			if ( attrs != null ) {
-				NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
-			}
+		if (statement != null && !statement.isEmpty()) {
+			Util.recordValue(attrs, "statement.value", statement);
 
 		}
-		catch (Exception e) {
-			Util.handleException("Custom/JackRabbit/GQL","error evaluating execute", e);
+		if (filter != null ) {
+			Util.recordValue(attrs, "filter.value", filter);
 
 		}
+
+		if ( attrs != null ) {
+			NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
+		}
+
 		return Weaver.callOriginal();
 	}
 
 	@Trace(dispatcher = true)
 	public static RowIterator executeXPath(String jcrQuery,
-            String jcrQueryLanguage,
-            Session session,
-            String commonPathPrefix,
-            Filter filter) {
+			String jcrQueryLanguage,
+			Session session,
+			String commonPathPrefix,
+			Filter filter) {
 
 		Map<String, Object> attrs = new HashMap<>();
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "GQL", "executeXPath"});
 
-		try {
 
-
-
-			if (jcrQuery != null && !jcrQuery.isEmpty()) {
-				Util.recordValue(attrs, "jcrQuery.value", jcrQuery);
-
-			}
-
-			if (jcrQueryLanguage != null && !jcrQueryLanguage.isEmpty()) {
-				Util.recordValue(attrs, "jcrQueryLanguage.value", jcrQueryLanguage);
-
-			}
-
-			if (filter != null ) {
-				Util.recordValue(attrs, "filter.value", filter);
-
-			}
-
-			if ( attrs != null ) {
-				NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
-			}
+		if (jcrQuery != null && !jcrQuery.isEmpty()) {
+			Util.recordValue(attrs, "jcrQuery.value", jcrQuery);
 
 		}
-		catch (Exception e) {
-			Util.handleException("Custom/JackRabbit/GQL","error evaluating executeXPath", e);
+
+		if (jcrQueryLanguage != null && !jcrQueryLanguage.isEmpty()) {
+			Util.recordValue(attrs, "jcrQueryLanguage.value", jcrQueryLanguage);
 
 		}
+
+		if (filter != null ) {
+			Util.recordValue(attrs, "filter.value", filter);
+
+		}
+
+		if ( attrs != null ) {
+			NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
+		}
+
 		return Weaver.callOriginal();
 	}
 

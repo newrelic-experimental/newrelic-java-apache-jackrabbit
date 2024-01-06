@@ -1,9 +1,6 @@
 package com.newrelic.instrumentation.labs.jackrabbit.data;
 
 import java.util.Map;
-import java.util.logging.Level;
-
-import com.newrelic.api.agent.NewRelic;
 
 
 public class Util {
@@ -15,9 +12,5 @@ public class Util {
 		}
 	}
 
-	public static  void handleException(String className, String message, Throwable e) {
-		//NewRelic.getAgent().getLogger().log(Level.INFO, "Custom" + className  +" Instrumentation - " + message);
-		NewRelic.getAgent().getLogger().log(Level.FINER, "Custom" + className +" Instrumentation - " + message + ": " + e.getMessage());
-	}
 
 }

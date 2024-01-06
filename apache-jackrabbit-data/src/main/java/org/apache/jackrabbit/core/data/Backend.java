@@ -74,20 +74,16 @@ public abstract class Backend {
 
 		Map<String, Object> attrs = new HashMap<>();
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "Backend", getClass().getSimpleName(), "write"});
-		try {
-			if (file != null ) {
-				Util.recordValue(attrs, "file.name",file.getName());
-				Util.recordValue(attrs, "file.path",file.getPath());
 
-			}
-			if ( attrs != null ) {
-				NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
-			}
-		}
-		catch (Exception e) {
-			Util.handleException(getClass().getSimpleName(),"error evaluating write", e);
+		if (file != null ) {
+			Util.recordValue(attrs, "file.name",file.getName());
+			Util.recordValue(attrs, "file.path",file.getPath());
 
 		}
+		if ( attrs != null ) {
+			NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
+		}
+
 		try {
 			Weaver.callOriginal();
 		} catch (Exception e) {

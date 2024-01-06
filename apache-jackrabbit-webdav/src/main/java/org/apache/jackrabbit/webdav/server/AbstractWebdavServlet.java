@@ -36,31 +36,24 @@ abstract public class AbstractWebdavServlet {
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "AbstractWebdavServlet", getClass().getSimpleName(), "execute"});
 
-		try {
-
-			if (request != null ) {
-				Util.recordRequest(attrs, request);
-
-			}
-
-			if (resource != null ) {
-				Util.recordValue(attrs, "resource.name", resource.getDisplayName());
-
-			}
-			if (response != null ) {
-				Util.recordValue(attrs, "response.status", response.getStatus());
-
-			}
-
-			if ( attrs != null ) {
-				NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
-			}
+		if (request != null ) {
+			Util.recordRequest(attrs, request);
 
 		}
-		catch (Exception e) {
-			Util.handleException(getClass().getSimpleName(),"error evaluating execute", e);
+
+		if (resource != null ) {
+			Util.recordValue(attrs, "resource.name", resource.getDisplayName());
 
 		}
+		if (response != null ) {
+			Util.recordValue(attrs, "response.status", response.getStatus());
+
+		}
+
+		if ( attrs != null ) {
+			NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
+		}
+
 		try {
 			result = Weaver.callOriginal();
 		} catch (Exception e) {

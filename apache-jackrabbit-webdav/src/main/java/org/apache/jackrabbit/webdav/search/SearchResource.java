@@ -29,24 +29,17 @@ abstract public class SearchResource {
 
 		NewRelic.getAgent().getTracedMethod().setMetricName(new String[] {"Custom", "JackRabbit", "SearchResource", getClass().getSimpleName(), "search"});
 
-		try {
 
-
-			if (sInfo != null ) {
-				Util.recordValue(attrs, "searchInfo.query", sInfo.getQuery());
-				Util.recordValue(attrs, "searchInfo.results", sInfo.getNumberResults());
-
-			}
-
-			if ( attrs != null ) {
-				NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
-			}
+		if (sInfo != null ) {
+			Util.recordValue(attrs, "searchInfo.query", sInfo.getQuery());
+			Util.recordValue(attrs, "searchInfo.results", sInfo.getNumberResults());
 
 		}
-		catch (Exception e) {
-			Util.handleException(getClass().getSimpleName(),"error evaluating search", e);
 
+		if ( attrs != null ) {
+			NewRelic.getAgent().getTracedMethod().addCustomAttributes(attrs);
 		}
+
 		try {
 			result = Weaver.callOriginal();
 		} catch (Exception e) {
