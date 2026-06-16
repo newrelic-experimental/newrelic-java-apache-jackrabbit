@@ -5,13 +5,12 @@ apply plugin: 'java'
 
 dependencies {
    implementation 'org.apache.jackrabbit:jackrabbit-webdav:2.20.12'
-   implementation  'javax.servlet:javax.servlet-api:3.1.0'
-   
+   implementation 'javax.servlet:javax.servlet-api:3.1.0'
 
    // New Relic Java Agent dependencies
-   implementation 'com.newrelic.agent.java:newrelic-agent:6.4.0'
-   implementation 'com.newrelic.agent.java:newrelic-api:6.4.0'
-   implementation fileTree(include: ['*.jar'], dir: '../libs')
+   implementation 'com.newrelic.agent.java:newrelic-agent:' + project.findProperty('java.agent.version')
+   implementation 'com.newrelic.agent.java:newrelic-api:' + project.findProperty('java.agent.version')
+   implementation 'com.newrelic.agent.java:agent-bridge:' + project.findProperty('java.agent.version')
    implementation fileTree(include: ['*.jar'], dir: '../test-lib')
 }
 
@@ -25,10 +24,8 @@ jar {
 }
 
 verifyInstrumentation {
-    passes("org.apache.jackrabbit:jackrabbit-webdav:[2.20.12,)") 
-    {
-        compile 'javax.servlet:javax.servlet-api:3.1.0'
-
-    }
-
+  passesOnly("org.apache.jackrabbit:jackrabbit-webdav:[2.8.5,)") {
+    implementation 'javax.servlet:javax.servlet-api:3.1.0'
+  }
+  exclude 'org.apache.jackrabbit:jackrabbit-webdav:2.9.0'
 }
